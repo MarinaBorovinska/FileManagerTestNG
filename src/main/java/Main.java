@@ -1,10 +1,10 @@
-import java.util.Scanner;
+/*import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        FileManager fileManager = new FileManager();
+        FileManager fileManager = new FileManager(true);
         ApachePOIExcelWrite apachePOIExcelWrite = new ApachePOIExcelWrite();
         ApachePOIExcelRead apachePOIExcelRead = new ApachePOIExcelRead();
         ApachePOIExcelFind apachePOIExcelFind = new ApachePOIExcelFind();
@@ -32,7 +32,8 @@ public class Main {
                     f = 0;
                     break;
                 case 1:
-                    fileManager.createFile();
+
+                    fileManager.createFile("");
                     break;
                 case 2:
                     fileManager.deleteFile();
@@ -60,3 +61,4 @@ public class Main {
 
     }
 }
+*/

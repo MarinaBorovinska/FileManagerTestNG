@@ -9,41 +9,64 @@ import java.util.Scanner;
 
 public class FileManager {
 
-    public void createFile(){
+    boolean interactive;
+    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+    FileManager(Boolean mode) {
+        interactive = mode;
+    }
+
+    public void createFile(String filePath){
+
+        if (interactive) {
+                try {
+                    filePath = pathInput();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
         List<String> lines = Arrays.asList("first", "second", "third");
-        Path file = Paths.get("new_file.txt");
+        Path file = Paths.get(filePath);
         try {
             Files.write(file, lines, Charset.forName("UTF-8"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("File new_file.txt is created");
+        System.out.println("File " + filePath + " is created");
     }
 
-    public void deleteFile(){
-
-        Scanner scanner = new Scanner(System.in);
+    public void deleteFile(String filePath) throws IOException{
+  /*    Scanner scanner = new Scanner(System.in);
         System.out.println("Enter File name: ");
         String inputPath = scanner.nextLine();
-        try{
-            File file = new File(inputPath + ".txt");
-            if(file.delete()){
-                System.out.println(file.getName() + " is deleted");
+  */
+        if (interactive) {
+            try {
+                filePath = pathInput();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            else{
-                System.out.println("Delete operation is failed.");
-            }
-        }catch(Exception e){
-            e.printStackTrace();
         }
+        boolean result;
 
+        File file = new File(filePath);
+
+        result = file.delete();
+
+            if(result){
+                System.out.println("File has been deleted");
+            }else{
+                System.out.println("Delete operation is failed");
+            }
     }
 
-    public void renameFile(){
-        File oldFile = new File("new_file.txt");
-        File newFile = new File("old_file.txt");
-
-        if(oldFile.renameTo(newFile)){
+    public void renameFile(String renameFilePath, String pathNew) throws IOException{
+        boolean result;
+        File oldFile = new File(renameFilePath);
+        File newFile = new File(pathNew);
+        result = oldFile.renameTo(newFile);
+        if(result){
             System.out.println("Rename succesful");
         }else{
             System.out.println("Rename failed");
@@ -122,4 +145,33 @@ public class FileManager {
         }
     }
 
+    public String pathInput() throws IOException {
+        String os;
+        String path;
+
+        os = System.getProperty("os.name");
+        printLogMessage("Your operation system is " + os);
+
+        if (os.contains("Windows")) {
+            printLogMessage("Please, input a path and file name in format (example): C:\\Users\\user\\test.txt");
+            path = reader.readLine();
+        } else if (os.contains("Mac")) {
+            printLogMessage("Please, input a path and file name in format (example) /Users/user/projects/test.txt");
+            path = reader.readLine();
+        } else if (os.contains("Linux")) {
+            printLogMessage("Please, input a path and file name in format (example) /home/user/projects/test.txt");
+            path = reader.readLine();
+        } else {
+            printLogMessage("Please, input a path and file name");
+            path = reader.readLine();
+        }
+
+        return path;
+    }
+
+    private void printLogMessage(String message) {
+        if (interactive) {
+            System.out.println(message);
+        }
+    }
 }
